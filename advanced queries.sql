@@ -1,0 +1,66 @@
+
+1.Revenue Status Automation Trigger
+
+DELIMITER //
+
+CREATE TRIGGER RevenueAutomation
+AFTER INSERT ON Sales
+FOR EACH ROW
+BEGIN
+    UPDATE Opportunities
+    SET Stage='Closed Won'
+    WHERE CustomerID=NEW.CustomerID;
+END //
+
+DELIMITER ;
+
+
+2.Duplicate Customer Prevention Procedure
+
+DELIMITER //
+
+CREATE PROCEDURE AddCustomer(
+IN p_CustomerID INT,
+IN p_Name VARCHAR(100),
+IN p_Email VARCHAR(100)
+)
+BEGIN
+
+DECLARE CustomerCount INT;
+
+SELECT COUNT(*)
+INTO CustomerCount
+FROM Customers
+WHERE Email=p_Email;
+
+IF CustomerCount > 0 THEN
+SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT='Duplicate Customer';
+
+ELSE
+
+INSERT INTO Customers
+VALUES(p_CustomerID,p_Name,p_Email,NULL,NULL,NULL,CURDATE());
+END IF;
+
+END //
+
+DELIMITER ;
+
+
+3.Ticket Assignment Procedure
+DELIMITER //
+
+CREATE PROCEDURE AssignTicket(
+IN p_TicketID INT,
+IN p_EmployeeID INT
+)
+BEGIN
+
+UPDATE SupportTickets
+SET Status='Assigned'
+WHERE TicketID=p_TicketID;
+
+END //
+
+DELIMITER ;
