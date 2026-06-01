@@ -84,9 +84,10 @@ AND YEAR(RegistrationDate) = YEAR(CURDATE());
 
 -- 11. Find customers who made more than one purchase
 
-SELECT CustomerID,
-COUNT(*) AS PurchaseCount
-FROM Orders
+SELECT 
+    CustomerID,
+    COUNT(*) AS Total_Purchases
+FROM SALES
 GROUP BY CustomerID
 HAVING COUNT(*) > 1;
 
