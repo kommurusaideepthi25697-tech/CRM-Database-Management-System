@@ -40,7 +40,7 @@ SET MESSAGE_TEXT='Duplicate Customer';
 ELSE
 
 INSERT INTO Customers
-VALUES(p_CustomerID,p_Name,p_Email,NULL,NULL,NULL,CURDATE());
+VALUES(p_CustomerID,p_Name,p_Email,NULL,NULL,CURDATE());
 END IF;
 
 END //
